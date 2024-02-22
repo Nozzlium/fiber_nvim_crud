@@ -8,7 +8,6 @@ import (
 	"github.com/nozzlium/fiber_nvim_crud/libs"
 	"github.com/nozzlium/fiber_nvim_crud/params"
 	"github.com/nozzlium/fiber_nvim_crud/repositories"
-	"github.com/nozzlium/fiber_nvim_crud/requestparam"
 	"github.com/nozzlium/fiber_nvim_crud/responsebody"
 )
 
@@ -31,21 +30,21 @@ func (service *ContactServiceImpl) Create(
 	ctx context.Context,
 	param params.Contact,
 ) (responsebody.Contact, error) {
-	tx, err := service.DB.BeginTx(
-		ctx,
-		nil,
-	)
-	if err != nil {
-		err = tx.Rollback()
-		return responsebody.Contact{}, err
-	}
-	err = tx.Commit()
-	if err != nil {
-		return responsebody.Contact{}, err
-	}
+	// tx, err := service.DB.BeginTx(
+	// 	ctx,
+	// 	nil,
+	// )
+	// if err != nil {
+	// 	err = tx.Rollback()
+	// 	return responsebody.Contact{}, err
+	// }
+	// err = tx.Commit()
+	// if err != nil {
+	// 	return responsebody.Contact{}, err
+	// }
 
 	contact := param.Contact
-	result, err := service.ContactRepository.Create(tx, entities.Contact{
+	result, err := service.ContactRepository.Create(nil, entities.Contact{
 		FirstName: contact.FirstName,
 		LastName:  contact.LastName,
 		Phone:     contact.Phone,
@@ -84,58 +83,58 @@ func (service *ContactServiceImpl) FindById(
 
 func (service *ContactServiceImpl) Update(
 	ctx context.Context,
-	contact requestparam.Contact,
+	param params.Contact,
 ) (responsebody.Contact, error) {
 	saved, err := service.ContactRepository.FindById(
 		ctx,
 		service.DB,
-		params.Contact{ID: contact.ID},
+		param,
 	)
 	if err != nil {
 		return responsebody.Contact{}, err
 	}
-	if contact.FirstName != "" {
-		saved.FirstName = contact.FirstName
+	if param.Contact.FirstName != "" {
+		saved.FirstName = param.Contact.FirstName
 	}
-	if contact.LastName != "" {
-		saved.LastName = contact.LastName
+	if param.Contact.LastName != "" {
+		saved.LastName = param.Contact.LastName
 	}
-	if contact.Phone != "" {
-		saved.Phone = contact.Phone
+	if param.Contact.Phone != "" {
+		saved.Phone = param.Contact.Phone
 	}
-	tx, err := service.DB.BeginTx(
-		ctx,
-		nil,
-	)
-	if err != nil {
-		return responsebody.Contact{}, err
-	}
-	result, err := service.ContactRepository.Edit(tx, saved)
-	if err != nil {
-		err = tx.Rollback()
-		return responsebody.Contact{}, err
-	}
-	err = tx.Commit()
-	if err != nil {
-		return responsebody.Contact{}, err
-	}
+	// tx, err := service.DB.BeginTx(
+	// 	ctx,
+	// 	nil,
+	// )
+	// if err != nil {
+	// 	return responsebody.Contact{}, err
+	// }
+	result, err := service.ContactRepository.Edit(nil, saved)
+	// if err != nil {
+	// 	err = tx.Rollback()
+	// 	return responsebody.Contact{}, err
+	// }
+	// err = tx.Commit()
+	// if err != nil {
+	// 	return responsebody.Contact{}, err
+	// }
 	return libs.ContactEntityToResponse(result), err
 }
 
 func (service *ContactServiceImpl) Delete(
 	ctx context.Context,
-	contact entities.Contact,
+	param params.Contact,
 ) (responsebody.Contact, error) {
-	tx, err := service.DB.BeginTx(ctx, nil)
-	if err != nil {
-		return responsebody.Contact{}, err
-	}
-	result, err := service.ContactRepository.Delete(tx, contact)
-	if err != nil {
-		err = tx.Rollback()
-		return responsebody.Contact{}, err
-	}
-	err = tx.Commit()
+	// tx, err := service.DB.BeginTx(ctx, nil)
+	// if err != nil {
+	// 	return responsebody.Contact{}, err
+	// }
+	result, err := service.ContactRepository.Delete(nil, param.Contact)
+	// if err != nil {
+	// 	err = tx.Rollback()
+	// 	return responsebody.Contact{}, err
+	// }
+	// err = tx.Commit()
 	if err != nil {
 		return responsebody.Contact{}, err
 	}

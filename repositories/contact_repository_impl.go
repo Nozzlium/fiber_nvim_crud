@@ -119,7 +119,7 @@ func (repository *ContactRepositoryImpl) FindById(
 	row := db.QueryRowContext(
 		ctx,
 		query,
-		params.ID,
+		params.Contact.ID,
 	)
 	var id uint
 	var firstName, lastName, phone string

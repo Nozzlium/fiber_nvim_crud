@@ -1,15 +1,15 @@
 package responsebody
 
 type Contact struct {
-	ID        uint
-	FirstName string
-	LastName  string
-	Phone     string
-	IsVip     bool
+	ID        uint   `json:"id"`
+	FirstName string `json:"firstName"`
+	LastName  string `json:"lastName"`
+	Phone     string `json:"phone"`
+	IsVip     bool   `json:"isVip"`
 }
 
 type Contacts struct {
-	PageNo   uint
-	PageSize uint
-	Contacts []Contact
+	PageNo   uint      `json:"pageNo"`
+	PageSize uint      `json:"pageSize"`
+	Contacts []Contact `json:"contacts"`
 }
