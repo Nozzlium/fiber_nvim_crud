@@ -1,0 +1,1 @@
+﻿Just a simple CRUD I wrote to practice coding using NVIM. I'm getting the hang of it but still not as fast as I would like. Also not using database for this one, the data is stored in a slice (I read on Twitter that this would be good for practice).
